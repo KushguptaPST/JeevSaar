@@ -10,7 +10,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "jest --detectOpenHandles --forceExit",
+    "test:e2e": "tsx scripts/e2e-workflow.ts"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",

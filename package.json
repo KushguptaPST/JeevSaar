@@ -15,6 +15,7 @@
     "ios": "npm --workspace=@reportsaathi/mobile run ios",
     "test": "npm run test:api && npm run test:mobile",
     "test:api": "npm --workspace=@reportsaathi/api test",
-    "test:mobile": "npm --workspace=@reportsaathi/mobile test"
+    "test:mobile": "npm --workspace=@reportsaathi/mobile test",
+    "test:e2e": "npm --workspace=@reportsaathi/api run test:e2e"
   }
 }
