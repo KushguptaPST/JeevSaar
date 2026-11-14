@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { FileText, CalendarPlus, ChevronRight, FileHeart } from 'lucide-react-native';
 import { ReportItem } from '@reportsaathi/shared';
-import { Card, StatusChip } from '../design/components';
+import { Card, StatusChip, OfflineNotice } from '../design/components';
 import { COLORS, MIN_TOUCH_TARGET, RADIUS, SPACING } from '../design/tokens';
 import { apiService } from '../services/api';
 import { triggerHaptic } from '../services/haptics';
@@ -91,6 +91,8 @@ export const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text style={styles.howAreYou}>{t('home.howAreYou')}</Text>
           </View>
         </View>
+
+        <OfflineNotice isOffline={false} />
 
         <FlatList
           data={reports.slice(0, 5)}
