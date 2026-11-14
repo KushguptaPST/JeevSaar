@@ -1,0 +1,17 @@
+{
+  "name": "jeevsaar-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build:shared": "npm --workspace=@reportsaathi/shared run build",
+    "dev:api": "npm --workspace=@reportsaathi/api run dev",
+    "start:mobile": "npm --workspace=@reportsaathi/mobile start",
+    "android": "npm --workspace=@reportsaathi/mobile run android",
+    "ios": "npm --workspace=@reportsaathi/mobile run ios",
+    "test:api": "npm --workspace=@reportsaathi/api test"
+  }
+}
