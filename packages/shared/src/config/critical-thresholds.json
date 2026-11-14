@@ -1,0 +1,58 @@
+{
+  "_NOTICE": "PLACEHOLDER - MUST BE REVIEWED AND SET BY A DOCTOR BEFORE REAL USERS",
+  "defaultDeviationThresholdPercent": 30,
+  "criticalDeviationThresholdPercent": 60,
+  "criticalTests": [
+    {
+      "testKey": "troponin",
+      "aliases": ["troponin i", "troponin t", "cardiac troponin", "trop i", "trop t"],
+      "alwaysUrgentIfAboveMax": true,
+      "severity": "urgent",
+      "emergencyAdvice": "Elevated troponin can indicate heart muscle stress or injury. Seek urgent medical attention or go to an emergency department immediately."
+    },
+    {
+      "testKey": "potassium",
+      "aliases": ["serum potassium", "potassium (k+)", "k+"],
+      "criticalMin": 2.8,
+      "criticalMax": 6.2,
+      "unit": "mmol/L",
+      "severity": "urgent",
+      "emergencyAdvice": "Severe potassium imbalance can affect heart rhythm. Requires prompt physician evaluation."
+    },
+    {
+      "testKey": "hemoglobin",
+      "aliases": ["hb", "haemoglobin", "hgb"],
+      "criticalMin": 7.0,
+      "criticalMax": 20.0,
+      "unit": "g/dL",
+      "severity": "urgent",
+      "emergencyAdvice": "Critically low or high hemoglobin requires timely clinical assessment."
+    },
+    {
+      "testKey": "platelet_count",
+      "aliases": ["platelets", "plt", "platelet count"],
+      "criticalMin": 30000,
+      "criticalMax": 1000000,
+      "unit": "/mcL",
+      "severity": "urgent",
+      "emergencyAdvice": "Very low platelet levels carry a risk of bleeding. Consult a doctor promptly."
+    },
+    {
+      "testKey": "fasting_blood_glucose",
+      "aliases": ["glucose, fasting", "fbs", "blood sugar fasting", "random blood sugar", "rbs"],
+      "criticalMin": 50,
+      "criticalMax": 350,
+      "unit": "mg/dL",
+      "severity": "urgent",
+      "emergencyAdvice": "Extreme glucose levels (hypoglycemia or severe hyperglycemia) require rapid medical care."
+    },
+    {
+      "testKey": "serum_creatinine",
+      "aliases": ["creatinine", "creat"],
+      "criticalMax": 4.0,
+      "unit": "mg/dL",
+      "severity": "urgent",
+      "emergencyAdvice": "Significantly elevated creatinine points to acute kidney stress. Please see a doctor."
+    }
+  ]
+}
