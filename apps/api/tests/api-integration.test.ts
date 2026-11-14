@@ -23,6 +23,19 @@ describe('Fastify REST API Integration Tests', () => {
     expect(body.status).toBe('ok');
     expect(body.app).toBe('ReportSaathi');
     expect(body.hospital).toBe('Shree Satya Sai Hospital');
+    expect(body.database).toBe('connected');
+  });
+
+  it('GET /metrics returns server health and database counts', async () => {
+    const res = await app.inject({
+      method: 'GET',
+      url: '/metrics',
+    });
+    expect(res.statusCode).toBe(200);
+    const body = JSON.parse(res.body);
+    expect(body.uptimeSeconds).toBeGreaterThanOrEqual(0);
+    expect(body.heapUsedMb).toBeGreaterThan(0);
+    expect(body.counts).toBeDefined();
   });
 
   it('POST /auth/otp/request and verify returns JWT token', async () => {

@@ -4,6 +4,7 @@ import fastifyCors from '@fastify/cors';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyRateLimit from '@fastify/rate-limit';
 import fastifyStatic from '@fastify/static';
+import { PrismaClient } from '@prisma/client';
 import { authPlugin } from './plugins/auth';
 import { adminRoutes } from './routes/admin';
 import { appointmentRoutes } from './routes/appointments';
@@ -12,6 +13,8 @@ import { reportRoutes } from './routes/reports';
 import { ttsRoutes } from './routes/tts';
 import { userRoutes } from './routes/user';
 import { config } from './config';
+
+const prisma = new PrismaClient();
 
 export function buildApp(): FastifyInstance {
   const app = fastify({
@@ -57,12 +60,49 @@ export function buildApp(): FastifyInstance {
   app.register(userRoutes);
 
   // Health check
-  app.get('/health', async () => ({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    app: config.app.appName,
-    hospital: config.hospital.name,
-  }));
+  app.get('/health', async () => {
+    let dbStatus = 'connected';
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+    } catch {
+      dbStatus = 'disconnected';
+    }
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      uptimeSeconds: Math.floor(process.uptime()),
+      database: dbStatus,
+      app: config.app.appName,
+      hospital: config.hospital.name,
+      providers: {
+        llm: process.env.LLM_PROVIDER || 'mock',
+        tts: process.env.TTS_PROVIDER || 'mock',
+        sms: 'mock',
+      },
+    };
+  });
+
+  // System Diagnostics and Metrics
+  app.get('/metrics', async () => {
+    let counts = { reports: 0, appointments: 0, audioCaches: 0 };
+    try {
+      const [reports, appointments, audioCaches] = await Promise.all([
+        prisma.report.count(),
+        prisma.appointment.count(),
+        prisma.audioCache.count(),
+      ]);
+      counts = { reports, appointments, audioCaches };
+    } catch {
+      // ignore
+    }
+    const mem = process.memoryUsage();
+    return {
+      uptimeSeconds: Math.floor(process.uptime()),
+      heapUsedMb: Math.round(mem.heapUsed / 1024 / 1024),
+      rssMb: Math.round(mem.rss / 1024 / 1024),
+      counts,
+    };
+  });
 
   // Welcome / Root API info
   app.get('/', async () => ({
