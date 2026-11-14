@@ -142,7 +142,24 @@ export function applySafeFallback(explanation: Explanation, language: SupportedL
   const fallback = SAFE_FALLBACK_TEXT[language] || SAFE_FALLBACK_TEXT.en;
 
   const sanitized = { ...explanation };
-  sanitized.overallSummary = `${explanation.overallSummary} ${fallback.summary}`.slice(0, 480);
+
+  // Sanitize overall summary if it has violations
+  const summaryViolations = inspectTextForSafetyViolations(sanitized.overallSummary, 'overallSummary');
+  if (summaryViolations.length > 0) {
+    sanitized.overallSummary = fallback.summary;
+  }
+
+  // Sanitize spoken script if it has violations
+  const spokenViolations = inspectTextForSafetyViolations(sanitized.spokenScript, 'spokenScript');
+  if (spokenViolations.length > 0) {
+    sanitized.spokenScript = `${fallback.summary} ${fallback.precaution}`;
+  }
+
+  // Sanitize doctor visit reason if it has violations
+  const reasonViolations = inspectTextForSafetyViolations(sanitized.doctorVisit.reason, 'doctorVisit.reason');
+  if (reasonViolations.length > 0) {
+    sanitized.doctorVisit.reason = fallback.summary;
+  }
 
   sanitized.tests = sanitized.tests.map((test) => {
     const cleanTest = { ...test };
