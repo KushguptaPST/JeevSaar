@@ -1,0 +1,183 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String        @id @default(uuid())
+  phone        String        @unique
+  language     String        @default("hi")
+  textSize     String        @default("normal")
+  hasConsented Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  consents      Consent[]
+  reports       Report[]
+  appointments  Appointment[]
+  notifications NotificationRecord[]
+
+  @@map("users")
+}
+
+model Consent {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  version    String   @default("1.0")
+  language   String   @default("hi")
+  accepted   Boolean  @default(true)
+  acceptedAt DateTime @default(now())
+  ipAddress  String?
+  userAgent  String?
+
+  @@index([userId])
+  @@map("consents")
+}
+
+model Report {
+  id                  String              @id @default(uuid())
+  userId              String
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename            String
+  fileUrl             String
+  fileMimeType        String
+  fileSizeBytes       Int
+  storagePath         String
+  status              String              @default("UPLOADED") // UPLOADED, EXTRACTED, EXPLAINED, FAILED
+  doctorVisitLevel    String?             // routine, soon, urgent
+  reportDate          String?
+  labName             String?
+  patientNameStripped Boolean             @default(true)
+  expiresAt           DateTime
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  values       ReportValue[]
+  explanations ExplanationRecord[]
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("reports")
+}
+
+model ReportValue {
+  id              String   @id @default(uuid())
+  reportId        String
+  report          Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  testName        String
+  testNameEnglish String
+  value           String
+  numericValue    Float?
+  unit            String   @default("")
+  referenceRange  String   @default("")
+  status          String   @default("unknown") // low, normal, high, unknown
+  rawText         String?
+  category        String?
+  createdAt       DateTime @default(now())
+
+  @@index([reportId])
+  @@index([testNameEnglish])
+  @@map("report_values")
+}
+
+model ExplanationRecord {
+  id                String   @id @default(uuid())
+  reportId          String
+  report            Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  language          String
+  overallSummary    String
+  doctorVisitLevel  String   // routine, soon, urgent
+  doctorVisitReason String
+  testsJson         Json
+  questionsJson     Json
+  spokenScript      String
+  disclaimer        String
+  createdAt         DateTime @default(now())
+
+  @@index([reportId])
+  @@index([language])
+  @@map("explanations")
+}
+
+model AudioCache {
+  id          String   @id @default(uuid())
+  hash        String   @unique // SHA256 of text + language + speaker
+  text        String
+  language    String
+  speaker     String
+  audioUrl    String
+  filePath    String
+  mimeType    String   @default("audio/mpeg")
+  durationSec Float?
+  createdAt   DateTime @default(now())
+
+  @@index([hash])
+  @@map("audio_cache")
+}
+
+model Appointment {
+  id              String   @id @default(uuid())
+  bookingRef      String   @unique
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hospitalId      String
+  hospitalName    String
+  departmentId    String
+  departmentName  String
+  date            String   // YYYY-MM-DD
+  timeSlot        String   // HH:mm
+  patientName     String
+  patientAge      Int
+  patientPhone    String
+  notes           String?
+  status          String   @default("PENDING_VERIFICATION") // PENDING_VERIFICATION, CONFIRMED, REJECTED, CANCELLED
+  rejectionReason String?
+  reminderSent    Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  documents AppointmentDocument[]
+
+  @@unique([hospitalId, departmentId, date, timeSlot])
+  @@index([userId])
+  @@index([date, timeSlot])
+  @@map("appointments")
+}
+
+model AppointmentDocument {
+  id                 String      @id @default(uuid())
+  appointmentId      String
+  appointment        Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  documentType       String      // GOVERNMENT_PHOTO_ID, DOCTOR_PRESCRIPTION, RECENT_MEDICAL_REPORT
+  originalFilename   String
+  fileUrl            String
+  filePath           String
+  fileMimeType       String
+  fileSizeBytes      Int
+  verificationStatus String      @default("PENDING") // PENDING, ACCEPTED, REJECTED
+  rejectionReason    String?
+  createdAt          DateTime    @default(now())
+
+  @@index([appointmentId])
+  @@map("appointment_documents")
+}
+
+model NotificationRecord {
+  id           String    @id @default(uuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  body         String
+  type         String    @default("APPOINTMENT_REMINDER") // APPOINTMENT_REMINDER, REPORT_READY, SYSTEM
+  scheduledFor DateTime?
+  sentAt       DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([userId])
+  @@map("notifications")
+}
