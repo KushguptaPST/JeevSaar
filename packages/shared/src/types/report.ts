@@ -20,6 +20,7 @@ export interface ReportItem {
   labName?: string;
   patientNameStripped?: boolean;
   status: 'UPLOADED' | 'EXTRACTED' | 'EXPLAINED' | 'FAILED';
+  doctorVisitLevel?: string;
   createdAt: string;
   updatedAt: string;
   values?: ExtractedReportValue[];
