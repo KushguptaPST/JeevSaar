@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Linking, Alert } from 'react-native';
 import { AlertCircle, AlertTriangle, CheckCircle2, PhoneCall } from 'lucide-react-native';
 import { DoctorVisitLevel } from '@reportsaathi/shared';
 import { COLORS, RADIUS, SPACING } from '../tokens';
+import { triggerHaptic } from '../../services/haptics';
 
 export interface DoctorVisitBannerProps {
   level: DoctorVisitLevel | string;
@@ -82,13 +83,26 @@ export const DoctorVisitBanner: React.FC<DoctorVisitBannerProps> = ({
       <Text style={[styles.reason, { color: config.textColor }]}>{reason}</Text>
 
       {config.isUrgent && (
-        <View style={styles.emergencyRow}>
-          <PhoneCall size={16} color="#B91C1C" strokeWidth={2.5} />
+        <TouchableOpacity
+          style={styles.emergencyRow}
+          activeOpacity={0.8}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={`Call emergency services ${emergencyNumber}`}
+          onPress={() => {
+            triggerHaptic('notificationError');
+            Linking.openURL(`tel:${emergencyNumber}`).catch(() => {
+              Alert.alert('Emergency Helpline', `Please dial ${emergencyNumber} on your phone.`);
+            });
+          }}
+        >
+          <View style={styles.emergencyIconBadge}>
+            <PhoneCall size={16} color="#FFFFFF" strokeWidth={2.5} />
+          </View>
           <Text style={styles.emergencyText}>
-            Severe chest pain or breathing difficulty? Call{' '}
-            <Text style={styles.emergencyNum}>{emergencyNumber}</Text> immediately.
+            Emergency symptoms? <Text style={styles.emergencyNum}>Call {emergencyNumber} Now</Text>
           </Text>
-        </View>
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -136,23 +150,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    paddingVertical: SPACING.xs + 2,
+    paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.md,
     borderRadius: RADIUS.md,
     marginTop: SPACING.md,
-    borderWidth: 1,
-    borderColor: '#FCA5A5',
+    borderWidth: 1.5,
+    borderColor: '#DC2626',
+    minHeight: 48,
+  },
+  emergencyIconBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#DC2626',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.xs + 2,
   },
   emergencyText: {
     fontSize: 13,
     color: '#991B1B',
     fontWeight: '600',
-    marginLeft: SPACING.xs + 2,
     flex: 1,
   },
   emergencyNum: {
     fontWeight: '800',
     textDecorationLine: 'underline',
+    color: '#DC2626',
   },
 });
 
