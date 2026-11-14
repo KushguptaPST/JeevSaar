@@ -2,6 +2,23 @@ import { Platform } from 'react-native';
 
 export type TextSizeOption = 'normal' | 'large' | 'extra-large';
 
+export type SupportedFontScript = 'en' | 'hi' | 'kn' | 'ta' | 'bn' | 'or' | 'pa';
+
+export const FONT_FAMILIES: Record<SupportedFontScript, string> = {
+  en: 'NotoSans-Regular',
+  hi: 'NotoSansDevanagari-Regular',
+  kn: 'NotoSansKannada-Regular',
+  ta: 'NotoSansTamil-Regular',
+  bn: 'NotoSansBengali-Regular',
+  or: 'NotoSansOriya-Regular',
+  pa: 'NotoSansGurmukhi-Regular',
+};
+
+export function getFontFamilyForScript(lang: string = 'en'): string {
+  const code = (lang.split('-')[0] || 'en') as SupportedFontScript;
+  return FONT_FAMILIES[code] || FONT_FAMILIES.en;
+}
+
 export const COLORS = {
   // Brand & Primary
   primary: '#0F766E',       // Deep teal (WCAG AAA compliant on white)
