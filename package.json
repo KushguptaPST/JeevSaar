@@ -8,10 +8,13 @@
   ],
   "scripts": {
     "build:shared": "npm --workspace=@reportsaathi/shared run build",
+    "build": "npm run build:shared && npm --workspace=@reportsaathi/api run build",
     "dev:api": "npm --workspace=@reportsaathi/api run dev",
     "start:mobile": "npm --workspace=@reportsaathi/mobile start",
     "android": "npm --workspace=@reportsaathi/mobile run android",
     "ios": "npm --workspace=@reportsaathi/mobile run ios",
-    "test:api": "npm --workspace=@reportsaathi/api test"
+    "test": "npm run test:api && npm run test:mobile",
+    "test:api": "npm --workspace=@reportsaathi/api test",
+    "test:mobile": "npm --workspace=@reportsaathi/mobile test"
   }
 }
