@@ -5,6 +5,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
+  Share,
   StyleSheet,
   Text,
   View,
@@ -16,6 +17,7 @@ import {
   AlertOctagon,
   ChevronRight,
   FileText,
+  Share2,
 } from 'lucide-react-native';
 import { Explanation, TestExplanationItem } from '@reportsaathi/shared';
 import {
@@ -113,6 +115,21 @@ export const ResultScreen: React.FC<{ navigation: any; route: any }> = ({
     navigation.navigate('BookAppointment', { linkedReportId: reportId });
   };
 
+  const handleShareQuestions = async () => {
+    if (!explanation?.questionsForDoctor || explanation.questionsForDoctor.length === 0) return;
+    triggerHaptic('impactLight');
+    const header = 'Questions for my Doctor (ReportSaathi):\n\n';
+    const formatted = explanation.questionsForDoctor.map((q, i) => `${i + 1}. ${q}`).join('\n\n');
+    try {
+      await Share.share({
+        title: 'Questions for Doctor',
+        message: `${header}${formatted}\n\nGenerated with ReportSaathi`,
+      });
+    } catch (e) {
+      console.warn('Share questions error:', e);
+    }
+  };
+
   if (loading || !explanation) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -176,8 +193,17 @@ export const ResultScreen: React.FC<{ navigation: any; route: any }> = ({
           {explanation.questionsForDoctor && explanation.questionsForDoctor.length > 0 && (
             <Card style={styles.questionsCard}>
               <View style={styles.questionsHeader}>
-                <HelpCircle size={20} color={COLORS.primary} />
-                <Text style={styles.questionsTitle}>{t('result.questionsHeading')}</Text>
+                <View style={styles.questionsTitleRow}>
+                  <HelpCircle size={20} color={COLORS.primary} />
+                  <Text style={styles.questionsTitle}>{t('result.questionsHeading')}</Text>
+                </View>
+                <Button
+                  label="Share"
+                  variant="outline"
+                  size="small"
+                  onPress={handleShareQuestions}
+                  accessibilityLabel="Share questions for doctor"
+                />
               </View>
               {explanation.questionsForDoctor.map((q, idx) => (
                 <View key={idx} style={styles.questionItem}>
@@ -294,7 +320,13 @@ const styles = StyleSheet.create({
   questionsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: SPACING.sm,
+  },
+  questionsTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
   },
   questionsTitle: {
     fontSize: 16,
