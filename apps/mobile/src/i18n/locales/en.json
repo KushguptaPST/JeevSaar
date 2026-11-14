@@ -1,0 +1,118 @@
+{
+  "common": {
+    "appName": "ReportSaathi",
+    "tagline": "Simple, spoken medical report explanations",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "back": "Back",
+    "retry": "Try Again",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "ok": "OK",
+    "today": "Today",
+    "tomorrow": "Tomorrow"
+  },
+  "languagePicker": {
+    "title": "Choose your language",
+    "subtitle": "Audio, explanations, and app interface will follow your choice",
+    "selectAndContinue": "Confirm Language"
+  },
+  "consent": {
+    "title": "Your Privacy Matters",
+    "summary": "We explain your medical reports in simple terms. Here is how your data is handled safely:",
+    "point1": "We use your report only to generate your simple explanation and spoken audio.",
+    "point2": "Your personal identifiers (name, phone, address, lab ID) are removed before processing.",
+    "point3": "Your data is kept safe and automatically deleted after 30 days. You can also delete everything at any time in Settings.",
+    "point4": "ReportSaathi is an educational aid, not a doctor. Always consult a qualified medical professional for health decisions.",
+    "acceptButton": "I Understand and Accept",
+    "declined": "Consent is required to process lab reports."
+  },
+  "auth": {
+    "title": "Enter your mobile number",
+    "subtitle": "We will send an OTP for secure verification",
+    "phonePlaceholder": "Enter 10-digit mobile number",
+    "sendOtp": "Get OTP",
+    "otpTitle": "Enter verification code",
+    "otpSubtitle": "Sent to {{phone}} (In development, enter 123456)",
+    "verifyOtp": "Verify and Continue",
+    "resend": "Resend OTP"
+  },
+  "home": {
+    "greeting": "Hello!",
+    "howAreYou": "How can ReportSaathi assist you today?",
+    "actionUnderstand": "Understand My Report",
+    "actionUnderstandDesc": "Upload a photo or PDF to get spoken and simple written explanations",
+    "actionAppointment": "Book Hospital Appointment",
+    "actionAppointmentDesc": "Consult doctors at Shree Satya Sai Hospital",
+    "recentReports": "Recent Reports",
+    "noReports": "No reports uploaded yet",
+    "viewAll": "View History"
+  },
+  "upload": {
+    "title": "Upload Lab Report",
+    "subtitle": "Take a photo or choose a PDF of your diagnostic report",
+    "camera": "Take Photo with Camera",
+    "gallery": "Select from Gallery",
+    "pdf": "Select PDF Document",
+    "previewTitle": "Report Preview",
+    "fileSelected": "Selected: {{filename}}",
+    "blurWarning": "Please ensure the text is well-lit and not blurry for accurate reading.",
+    "proceedButton": "Process and Explain Report",
+    "changeFile": "Choose another file"
+  },
+  "processing": {
+    "reading": "Reading your lab report...",
+    "readingDesc": "Safely extracting test values and reference ranges",
+    "preparing": "Preparing your spoken explanation...",
+    "preparingDesc": "Simplifying medical terms into plain language",
+    "almostDone": "Almost ready...",
+    "failed": "Unable to process report",
+    "failedDesc": "Please verify your document is clear and readable."
+  },
+  "result": {
+    "title": "Your Report Summary",
+    "listenAll": "Listen to Explanation",
+    "pause": "Pause",
+    "summaryHeading": "Overall Summary",
+    "testsHeading": "Individual Test Breakdown",
+    "questionsHeading": "Questions to ask your doctor",
+    "bookShortcut": "Need consultation? Book an appointment",
+    "disclaimerHeading": "Important Medical Notice"
+  },
+  "appointments": {
+    "title": "Book Hospital Appointment",
+    "subtitle": "Shree Satya Sai Hospital OPD",
+    "step1Department": "Select Department",
+    "step2DateTime": "Select Date & Time Slot",
+    "step3Patient": "Patient Details",
+    "step4Document": "Upload Required Document",
+    "namePlaceholder": "Patient full name",
+    "agePlaceholder": "Age in years",
+    "phonePlaceholder": "Contact phone number",
+    "docTypeLabel": "Accepted Document Types:",
+    "docHelp": "Govt Photo ID (Aadhaar / Voter ID) OR Doctor's referral OR recent lab report",
+    "confirmButton": "Confirm Booking",
+    "myAppointments": "My Appointments",
+    "noAppointments": "No appointments booked yet",
+    "statusPending": "Verification Pending",
+    "statusConfirmed": "Confirmed",
+    "statusRejected": "Rejected",
+    "reminderNote": "You will receive a reminder notification the evening before your visit."
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "App Language",
+    "textSize": "Text Size",
+    "textSizeNormal": "Normal",
+    "textSizeLarge": "Large",
+    "textSizeExtraLarge": "Extra Large",
+    "deleteData": "Delete All My Data",
+    "deleteDataConfirm": "Are you sure? This will permanently delete your account, reports, audio, and documents.",
+    "about": "About ReportSaathi",
+    "disclaimer": "Medical Disclaimer",
+    "logout": "Log Out"
+  }
+}
+
