@@ -60,3 +60,5 @@ yarn-error.log*
 .vscode/
 *.swp
 *.swo
+.bundle/
+apps/mobile/.bundle/
